@@ -1,4 +1,14 @@
 # README
+!!important terminal settings
+- `rows` 50
+- `columns` 105
+- `show scrollbar` on
+- `font` Monospace 12pt
+- `cell spacing` 2 width and 1 height
+- `background color` #171420
+- `scroll on output` on
+- `limit scrollback to` 50
+
 
 This is a simple program that displays a bouncing box on the terminal using the WASD keys for movement. The box is displayed using the Monospace 12pt font at a width of 2 and a height of 1. The box will bounce around the terminal and change color when it hits the edges of the terminal.
 

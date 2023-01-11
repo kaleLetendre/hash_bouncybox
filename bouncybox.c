@@ -139,7 +139,7 @@ int main(){
 		xpos+=deltaX;
 		ypos+=deltaY;
 
-        	usleep(60000);//wait 1/15 seconds
+        	usleep(30000);//wait 1/15 seconds
 
 		current_image = new_image;//set calculated frame to be shown next
 		setImage(new_image);//reset to be calulated
