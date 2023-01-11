@@ -8,6 +8,7 @@
 #define width  105
 char black[] = "\033[0;30m#";
 char white[] = "\033[0;37m#";
+char box_colors[6][11] = {"\033[0;37m#","\033[0;31m#","\033[0;32m#","\033[0;33m#","\033[0;35m#","\033[0;36m#"};
 // Do NOT touch this function signature
 void setImage(int image[height][width]) {
         for(int i = 0; i < height; i++){
@@ -19,11 +20,11 @@ void setImage(int image[height][width]) {
 void pixelOn(int x, int y, int image[height][width]){image[y][x] = 1;}
 void pixelOff(int x, int y, int image[height][width]){image[y][x] = 0;}
 
-void draw(int image[height][width]){
+void draw(int image[height][width],int color_choice){
 	char screen[height*width*11] = {'\0'};
 	for(int i = 0; i < height; i++){
                 for (int j = 0; j < width; j++){
-			if(image[i][j]){strcat(screen,white);}
+			if(image[i][j]){strcat(screen,box_colors[color_choice]);}
 			else{strcat(screen,black);}
                 }
         }
@@ -86,6 +87,8 @@ int main(){
 	int ground_time = 0;
 	int friction = 1;
 	int key_presses = 0;
+	int color_choice = 0;
+	int colorslen = sizeof(box_colors)/sizeof(box_colors[0]);
     	while(running){
 		if (is_key_pressed()) {
 			key_presses +=1;
@@ -97,29 +100,40 @@ int main(){
 			xpos = width-size-1;
 			deltaX = (-deltaX+bounce_loss/2);
 			if(deltaX > 0){deltaX = 0;}
+			color_choice +=1;
 		}
         	if(xpos <= 0){//LEFT WALL
 			xpos = 1;
         		deltaX = (-deltaX-bounce_loss/2);
         		if (deltaX < 0){deltaX = 0;}
+			color_choice +=1;
         	}
 		if(ypos>=height-size){//GROUND
 			ypos = height-size;
 			deltaY = -deltaY+bounce_loss;//bounce but add 1 to stop infinite bounce (energy loss)
 			ground_time +=1; //to check if friction (aka x speed loss) should occur
+			if(ground_time==1){
+				color_choice +=1;
+			}
 		}
 		if(ypos <= 0){//ROOF
 			ypos = 1;
 			deltaY = gravity;
+			color_choice +=1;
 		}
-		if(ypos<height-size){ground_time=0;}//reset ground time
+		if(ypos<height-size){
+			ground_time=0;//reset ground time
+		}
 		if(ground_time >= 2 && deltaX != 0){
 			int sign = (deltaX>0)?1:((deltaX<0)?-1:0); //if num>0 sign = 1 if num < 0 sign = -1 else sign = 0
 			deltaX -= sign*friction;
-			ground_time=0;}
+			ground_time=0;
+		}
+
+		if(color_choice >= colorslen){color_choice = 0;};
 		//printf("%d\t%d\n",deltaX,ground_time);
 		box(xpos,ypos,size,size,new_image);//calculate for next frame
-		draw(current_image);//show previouse calulated frame
+		draw(current_image,color_choice);//show previouse calulated frame
 
 		deltaY+=gravity;//accelerate due to gravity every frame
 		xpos+=deltaX;
