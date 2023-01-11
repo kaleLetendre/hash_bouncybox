@@ -82,7 +82,7 @@ int main(){
     	int running = 1;
 	int gravity = 1;
 	int bounce_loss = 1;
-	int deltaX = -3;
+	int deltaX = 0;
 	int deltaY = 0;
 	int ground_time = 0;
 	int friction = 1;
@@ -93,7 +93,7 @@ int main(){
 		if (is_key_pressed()) {
 			key_presses +=1;
             		char c = getchar();
-            		if (c == 'w') {deltaY-=8;} else if (c == 'a'){deltaX-=4;}else if(c == 's'){deltaY+=8;}else if(c == 'd'){deltaX+=4;}
+            		if (c == 'w') {deltaY-=9;} else if (c == 'a'){deltaX-=5;}else if(c == 's'){deltaY+=9;}else if(c == 'd'){deltaX+=5;}
 			if(key_presses > 3){tcflush(STDIN_FILENO, TCIFLUSH);}
         	}
         	if(xpos>=width-size){//RIGHT WALL
